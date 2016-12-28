@@ -264,10 +264,7 @@ private[play] class PlayRequestHandler(val server: NettyServer) extends ChannelI
         }
       }
       // Clean and validate the action's result
-      validatedResult <- {
-        val cleanedResult = ServerResultUtils.cleanFlashCookie(requestHeader, actionResult)
-        ServerResultUtils.validateResult(requestHeader, cleanedResult, errorHandler(app))
-      }
+      validatedResult <- ServerResultUtils.validateResult(requestHeader, actionResult, errorHandler(app))
       // Convert the result to a Netty HttpResponse
       convertedResult <- {
         modelConversion.convertResult(validatedResult, requestHeader, request.getProtocolVersion, errorHandler(app))
